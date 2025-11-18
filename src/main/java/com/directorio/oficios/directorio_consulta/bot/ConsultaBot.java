@@ -25,8 +25,6 @@ public class ConsultaBot extends TelegramLongPollingBot {
     @Value("${telegram.bot.username}")
     private String botUsername;
 
-    @Value("${telegram.admin.id:-1}")
-    private Long adminId;
 
     private final RestTemplate restTemplate;
 
@@ -49,13 +47,6 @@ public class ConsultaBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage()) {
-
-            User user = update.getMessage().getFrom();
-            if (adminId != -1 && !user.getId().equals(adminId)) {
-                sendMessage(update.getMessage().getChatId(), " **Acceso Denegado.** Este bot es privado.");
-                return;
-            }
-
             if (update.getMessage().hasText()) {
                 String messageText = update.getMessage().getText();
                 long chatId = update.getMessage().getChatId();
